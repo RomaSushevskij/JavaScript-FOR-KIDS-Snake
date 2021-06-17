@@ -199,10 +199,10 @@
             var randomCol = Math.floor(Math.random() * (widthInBlocks - 2)) + 1;
             var randomRow = Math.floor(Math.random() * (heightInBlocks - 2)) + 1;
             this.position = new Block(randomCol, randomRow);
-            
+            //Проверка на совпедение позиции ячейки, в которой появилось яблоко и ячеек, занятых телом змейки
             for (var i = 0; i < occupiedBlocks.length; i += 1) {
                 if (this.position.equal(occupiedBlocks[i])) {
-                    this.move(occupiedBlocks);
+                    this.move(occupiedBlocks);//Вызываем метод move снова
                     return; 
                 }
             }
