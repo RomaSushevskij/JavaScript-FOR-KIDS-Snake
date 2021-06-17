@@ -111,12 +111,12 @@
 
         //Метод конструктора Snake для рисования сегментов змейки
         Snake.prototype.draw = function() {
-            this.segments[0].drawSquare("#E28B00");
+            this.segments[0].drawSquare("#DF3B01");
             for (var i = 1; i < this.segments.length; i += 2) {
                 this.segments[i].drawSquare("#788F00");
             }
             for (var j = 2; j < this.segments.length; j += 2) {
-                this.segments[j].drawSquare("#DF3B01");
+                this.segments[j].drawSquare("#E28B00");
             };
         };
        
