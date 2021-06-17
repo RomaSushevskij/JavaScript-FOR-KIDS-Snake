@@ -5,9 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Snake</title>
+    <style>
+        body {
+            background-color: rgba(182, 255, 251, 0.747);
+        }
+        canvas {
+            display:block;
+            margin:auto;
+            background-color: rgba(255, 198, 132, 0.781);
+        }
+    </style>
     </head>
 <body>
-   <canvas id="canvas" width="1300" height="600"></canvas>
+   <canvas id="canvas" width="800" height="560"></canvas>
     <script src="jquery/dist/jquery.js"></script>
     <script>
         //Создаем переменные и получаем контекст рисования
@@ -43,7 +53,7 @@
 
         //Функция уведомления о завершении игры
         var gameOver = function() {
-            clearInterval(intervalId);
+            playing = false;
             ctx.fillStyle = "black";
             ctx.font = "80px Courier";
             ctx.textBaseline = "middle";
@@ -102,12 +112,12 @@
 
         //Метод конструктора Snake для рисования сегментов змейки
         Snake.prototype.draw = function() {
-            this.segments[0].drawSquare("#E28B00");
+            this.segments[0].drawSquare("#DF3B01");
             for (var i = 1; i < this.segments.length; i += 2) {
                 this.segments[i].drawSquare("#788F00");
             }
             for (var j = 2; j < this.segments.length; j += 2) {
-                this.segments[j].drawSquare("#DF3B01");
+                this.segments[j].drawSquare("#E28B00");
             };
         };
        
@@ -136,6 +146,7 @@
             this.segments.unshift(newHead);
             if (newHead.equal(apple.position)) {
                 score += 1;
+                animationTime -= 5;
                 apple.move();
             } else {
                 this.segments.pop();
@@ -190,22 +201,31 @@
             var randomCol = Math.floor(Math.random() * (widthInBlocks - 2)) + 1;
             var randomRow = Math.floor(Math.random() * (heightInBlocks - 2)) + 1;
             this.position = new Block(randomCol, randomRow);
-            console.log(randomCol, randomRow);
         };
 
         //Создаем объекты змейки и яблока
         var snake = new Snake();
         var apple = new Apple();
 
-        //Запускаем функцию анимации через SetInterval
-        var intervalId = setInterval(function() {
+        var playing = true;
+        var animationTime = 100;
+
+        //Функция для отображения всех составляющих игры и ее анимации через setTimeout
+        var gameLoop = function () {
             ctx.clearRect(0, 0, width, height);
             drawScore();
             snake.move();
             snake.draw();
-            apple.draw()
+            apple.draw();
             drawBorder();
-        }, 100);
+            //Условие, при котором будет вызываться setTimeout
+            if (playing) {
+                setTimeout(gameLoop, animationTime);
+            }
+        };
+                
+        //Запускаем функцию 
+        gameLoop();
 
         //Преобразуем коды клавиш в направления
         var directions = {
